@@ -1,0 +1,21 @@
+services:
+  db:
+    image: pgvector/pgvector:pg16
+    container_name: traider-db
+    restart: unless-stopped
+    environment:
+      POSTGRES_USER: traider
+      POSTGRES_PASSWORD: traider
+      POSTGRES_DB: traider
+    ports:
+      - "5432:5432"
+    volumes:
+      - traider-db-data:/var/lib/postgresql/data
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U traider -d traider"]
+      interval: 5s
+      timeout: 3s
+      retries: 10
+
+volumes:
+  traider-db-data:
